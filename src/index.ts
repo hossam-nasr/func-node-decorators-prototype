@@ -1,8 +1,8 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { http } from "../framework";
 
-class FunctionApp {
-
+class FunctionApp implements FunctionApp {
+    // @azureFunction()
     @http()
     async httpTrigger1(context: InvocationContext, request: HttpRequest) {
         context.log(`Http function processed request for url "${request.url}"`);
