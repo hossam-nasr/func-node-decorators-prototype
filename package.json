@@ -1,0 +1,19 @@
+{
+  "name": "func-node-decorators-prototype",
+  "version": "1.0.0",
+  "description": "Prototype for Azure Functions decorators programming model for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha 'dist/test/**/*.test.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hossam-nasr/func-node-decorators-prototype.git"
+  },
+  "author": "Hossam Nasr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hossam-nasr/func-node-decorators-prototype/issues"
+  },
+  "homepage": "https://github.com/hossam-nasr/func-node-decorators-prototype#readme"
+}
