@@ -1,3 +1,6 @@
-declare module "@azure/functions-decorators-typescript" {
 
+declare module "@azure/functions-decorators-typescript" {
+    export class FunctionApp {
+
+    }
 }
