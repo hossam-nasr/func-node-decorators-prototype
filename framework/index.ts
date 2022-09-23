@@ -1,9 +1,10 @@
-import { app, FunctionHandler, FunctionInput, FunctionOutput, FunctionTrigger, HttpTriggerOptions, output, trigger } from "@azure/functions";
+import { app, FunctionHandler, FunctionInput, FunctionOutput, FunctionTrigger, HttpTriggerOptions, output, trigger as azFuncTrigger } from "@azure/functions";
 
-export function http(options?: HttpTriggerOptions) {
-    return function(target: FunctionApp, propertyKey: string, descriptor: PropertyDescriptor) {
-        let functionName = propertyKey;
-        FunctionApp.createFunction(functionName, trigger.http(options));
+export function http(options: HttpTriggerOptions = {}) {
+    return function(target: any, propertyKey: string | symbol, index: number) {
+        let functionName = propertyKey.toString();
+        const httpOptions = { index, ...azFuncTrigger.http(options) };
+        FunctionApp.createFunction(functionName, httpOptions);
         if (!FunctionApp.hasReturnValue(functionName)) {
             FunctionApp.setReturnValue(functionName, output.http({}));
         }
@@ -11,17 +12,58 @@ export function http(options?: HttpTriggerOptions) {
 }
 
 export function azureFunction() {
-    return function(target: FunctionApp, propertyKey: string, descriptor: PropertyDescriptor) {
+    return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const functionName = propertyKey;
         const functionHandler = descriptor.value!
         FunctionApp.registerFunction(functionName, functionHandler);
     }
 }
 
-class FunctionApp {
-    private static functions: Map<string, FunctionInfo>;
+export function returns(options: FunctionOutput) {
+    return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const functionName = propertyKey;
+        FunctionApp.setReturnValue(functionName, options);
+    }
+}
 
-    static createFunction(functionName: string, trigger: FunctionTrigger) {
+export function outputs(options: FunctionOutput) {
+    return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const functionName = propertyKey;
+        FunctionApp.addOutput(functionName, options);
+    }
+
+}
+
+export function trigger(type: string, options: Record<string, unknown> = {}) {
+    return function(target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const trigger = {
+            type,
+            name: functionName + index,
+            index,
+            ...options
+        }
+        FunctionApp.createFunction(functionName, trigger);
+    }
+}
+
+export function input(type: string, options:Record<string, unknown> = {}) {
+    return function(target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const input = {
+            type,
+            name: functionName + index,
+            index,
+            ...options
+        }
+        FunctionApp.addInput(functionName, input);
+    }
+}
+
+class FunctionApp {
+    private static functions: Map<string, FunctionInfo> = new Map<string, FunctionInfo>();
+
+    static createFunction(functionName: string, trigger: Trigger) {
         FunctionApp.functions[functionName] = {
             trigger
         }
@@ -29,7 +71,7 @@ class FunctionApp {
 
     static registerFunction(functionName: string, functionHandler: FunctionHandler) {
         const functionInfo: FunctionInfo = FunctionApp.functions[functionName];
-        app.generic(functionInfo.trigger.type, functionName, {
+        app.generic(functionName, {
             handler: functionHandler,
             ...functionInfo
         })
@@ -45,7 +87,7 @@ class FunctionApp {
         return typeof functionInfo.return !== 'undefined'
     }
 
-    static addInput(functionName: string, inputOptions: FunctionInput) {
+    static addInput(functionName: string, inputOptions: Input) {
         const functionInfo: FunctionInfo = FunctionApp.functions[functionName];
         if (functionInfo.extraInputs) {
             functionInfo.extraInputs.push(inputOptions)
@@ -65,11 +107,19 @@ class FunctionApp {
 }
 
 export interface FunctionInfo {
-    trigger: FunctionTrigger;
+    trigger: Trigger;
 
     return?: FunctionOutput;
 
-    extraInputs?: FunctionInput[];
+    extraInputs?: Input[];
 
     extraOutputs?: FunctionOutput[];
+}
+
+export interface Input extends FunctionInput {
+    index: number;
+}
+
+export interface Trigger extends FunctionTrigger {
+    index: number;
 }

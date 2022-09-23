@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/hossam-nasr/func-node-decorators-prototype#readme",
   "dependencies": {
-    "@azure/functions": "^4.0.0-alpha.2"
+    "@azure/functions": "C:\\Users\\hossamnasr\\ms\\azure\\nodejs-worker\\library"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",
