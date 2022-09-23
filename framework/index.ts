@@ -71,6 +71,10 @@ class FunctionApp {
 
     static registerFunction(functionName: string, functionHandler: FunctionHandler) {
         const functionInfo: FunctionInfo = FunctionApp.functions[functionName];
+        if (!functionInfo || !functionInfo.trigger) {
+            throw new Error("no trigger is defined for this function");
+        }
+        
         app.generic(functionName, {
             handler: functionHandler,
             ...functionInfo
