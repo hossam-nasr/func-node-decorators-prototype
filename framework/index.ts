@@ -11,6 +11,14 @@ export function http(options: HttpTriggerOptions = {}) {
     }
 }
 
+export function timer(schedule: string, options?: TimerOptions) {
+    return function(target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const timerOptions = {index, ...azFuncTrigger.timer({schedule, ...options})};
+        FunctionApp.createFunction(functionName, timerOptions);
+    }
+}
+
 export function azureFunction() {
     return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const functionName = propertyKey;
@@ -126,4 +134,18 @@ export interface Input extends FunctionInput {
 
 export interface Trigger extends FunctionTrigger {
     index: number;
+}
+
+export interface TimerOptions {
+    /**
+     * If `true`, the function is invoked when the runtime starts.
+     * For example, the runtime starts when the function app wakes up after going idle due to inactivity, when the function app restarts due to function changes, and when the function app scales out.
+     * _Use with caution_. runOnStartup should rarely if ever be set to `true`, especially in production.
+     */
+     runOnStartup?: boolean;
+
+     /**
+      * When true, schedule will be persisted to aid in maintaining the correct schedule even through restarts. Defaults to true for schedules with interval >= 1 minute
+      */
+     useMonitor?: boolean;
 }

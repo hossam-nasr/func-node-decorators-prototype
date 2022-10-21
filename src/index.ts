@@ -1,5 +1,5 @@
-import { HttpRequest, InvocationContext } from "@azure/functions";
-import { azureFunction, http } from "../framework";
+import { HttpRequest, InvocationContext, Timer } from "@azure/functions";
+import { azureFunction, http, timer } from "../framework";
 
 class FunctionApp {
     
@@ -12,6 +12,12 @@ class FunctionApp {
         return {
             body: `Hello, ${name}`
         }
+    }
+
+    @azureFunction()
+    async timerTrigger1(context: InvocationContext, @timer('0 */5 * * * *') myTimer: Timer) {
+        var timestamp = new Date().toISOString();
+        context.log('The current time is: ', timestamp);
     }
 
 }
