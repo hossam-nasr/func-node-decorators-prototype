@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext, Timer } from '@azure/functions';
-import { azureFunction, http, input, output, timer, trigger } from '../framework';
+import { azureFunction, blobInput, blobOutput, http, queueTrigger, timer } from '../framework';
 
 class FunctionApp {
     @azureFunction()
@@ -22,10 +22,9 @@ class FunctionApp {
     @azureFunction()
     async copyBlob1(
         context: InvocationContext,
-        @trigger('queueTrigger', { queueName: 'copyblobqueue', connection: 'storage_APPSETTING' }) queueItem: unknown,
-        @input('blob', { connection: 'storage_APPSETTING', path: 'helloworld/{queueTrigger}' }) blobInput: unknown,
-        @output('blob', { connection: 'storage_APPSETTING', path: 'helloworld/{queueTrigger}-copy' })
-        blobOutput: any
+        @queueTrigger('copyblobqueue', 'storage_APPSETTING' ) queueItem: unknown,
+        @blobInput('helloworld/{queueTrigger}', 'storage_APPSETTING') blobInput: unknown,
+        @blobOutput('helloworld/{queueTrigger}-copy', 'storage_APPSETTING') blobOutput: any
     ): Promise<void> {
         context.log('Storage queue function processes work item: ', queueItem);
         blobOutput.set(blobInput);

@@ -58,6 +58,20 @@ export function trigger(type: string, options: Record<string, unknown> = {}) {
     };
 }
 
+export function queueTrigger(queueName: string, connection: string) {
+    return function (target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const trigger = {
+            type: 'queueTrigger',
+            name: functionName + index,
+            index,
+            queueName,
+            connection,
+        }
+        FunctionApp.addTrigger(functionName, trigger);
+    }
+}
+
 export function input(type: string, options: Record<string, unknown> = {}) {
     return function (target: any, propertyKey: string | symbol, index: number) {
         const functionName = propertyKey.toString();
@@ -71,6 +85,20 @@ export function input(type: string, options: Record<string, unknown> = {}) {
     };
 }
 
+export function blobInput(path: string, connection: string) {
+    return function (target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const input = {
+            type: 'blob',
+            name: functionName + index,
+            index,
+            path,
+            connection
+        };
+        FunctionApp.addInput(functionName, input);
+    };
+}
+
 export function output(type: string, options: Record<string, unknown> = {}) {
     return function (target: any, propertyKey: string | symbol, index: number) {
         const functionName = propertyKey.toString();
@@ -79,6 +107,20 @@ export function output(type: string, options: Record<string, unknown> = {}) {
             name: functionName + index,
             index,
             ...options,
+        };
+        FunctionApp.addOutput(functionName, outputOptions);
+    };
+}
+
+export function blobOutput(path: string, connection: string) {
+    return function (target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const outputOptions = {
+            type: 'blob',
+            name: functionName + index,
+            index,
+            path,
+            connection
         };
         FunctionApp.addOutput(functionName, outputOptions);
     };
