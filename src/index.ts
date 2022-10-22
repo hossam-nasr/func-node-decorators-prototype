@@ -1,17 +1,16 @@
-import { HttpRequest, InvocationContext, Timer } from "@azure/functions";
-import { azureFunction, http, timer } from "../framework";
+import { HttpRequest, InvocationContext, Timer } from '@azure/functions';
+import { azureFunction, http, input, output, timer, trigger } from '../framework';
 
 class FunctionApp {
-    
-   @azureFunction()
+    @azureFunction()
     async testHttpTrigger(context: InvocationContext, @http() request: HttpRequest) {
         context.log(`Http function processed request for url "${request.url}"`);
 
-        const name = request.query.get('name') || await request.text() || 'world';
+        const name = request.query.get('name') || (await request.text()) || 'world';
 
         return {
-            body: `Hello, ${name}`
-        }
+            body: `Hello, ${name}`,
+        };
     }
 
     @azureFunction()
@@ -20,6 +19,17 @@ class FunctionApp {
         context.log('The current time is: ', timestamp);
     }
 
+    @azureFunction()
+    async copyBlob1(
+        context: InvocationContext,
+        @trigger('queueTrigger', { queueName: 'copyblobqueue', connection: 'storage_APPSETTING' }) queueItem: unknown,
+        @input('blob', { connection: 'storage_APPSETTING', path: 'helloworld/{queueTrigger}' }) blobInput: unknown,
+        @output('blob', { connection: 'storage_APPSETTING', path: 'helloworld/{queueTrigger}-copy' })
+        blobOutput: any
+    ): Promise<void> {
+        context.log('Storage queue function processes work item: ', queueItem);
+        blobOutput.set(blobInput);
+    }
 }
 
-export default FunctionApp
+export default FunctionApp;
