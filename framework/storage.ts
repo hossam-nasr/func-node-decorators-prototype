@@ -1,5 +1,19 @@
 import FunctionApp from "./FunctionApp";
 
+export function blobTrigger(path: string, connection: string) {
+    return function (target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const triggerOptions = {
+            type: "blobTrigger",
+            name: functionName + index,
+            index,
+            path,
+            connection
+        };
+        FunctionApp.addTrigger(functionName, triggerOptions);
+    }
+}
+
 export function blobOutput(path: string, connection: string) {
     return function (target: any, propertyKey: string | symbol, index: number) {
         const functionName = propertyKey.toString();
@@ -39,5 +53,19 @@ export function queueTrigger(queueName: string, connection: string) {
             connection,
         }
         FunctionApp.addTrigger(functionName, trigger);
+    }
+}
+
+export function queueOutput(queueName: string, connection: string) {
+    return function (target: any, propertyKey: string | symbol, index: number) {
+        const functionName = propertyKey.toString();
+        const outputOptions = {
+            type: 'queue',
+            name: functionName + index,
+            index,
+            queueName,
+            connection
+        };
+        FunctionApp.addOutput(functionName, outputOptions);
     }
 }

@@ -4,6 +4,7 @@ import {
 import FunctionApp from './FunctionApp';
 import { TimerOptions } from './types';
 
+export * from "./cosmosdb";
 export * from "./http";
 export * from "./storage";
 
