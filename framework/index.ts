@@ -16,11 +16,11 @@ export function timer(schedule: string, options?: TimerOptions) {
     };
 }
 
-export function azureFunction() {
+export function azureFunction(name?: string) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-        const functionName = propertyKey;
+        const functionId = propertyKey;
         const functionHandler = descriptor.value!;
-        FunctionApp.registerFunction(functionName, functionHandler);
+        FunctionApp.registerFunction(functionId, functionHandler, name);
     };
 }
 

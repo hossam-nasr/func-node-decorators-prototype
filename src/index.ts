@@ -19,7 +19,7 @@ class FunctionApp {
         context.log('The current time is: ', timestamp);
     }
 
-    @azureFunction()
+    @azureFunction('customFunctionName')
     async copyBlob1(
         context: InvocationContext,
         @queueTrigger('copyblobqueue', 'storage_APPSETTING' ) queueItem: unknown,

@@ -20,8 +20,8 @@ export default class FunctionApp {
         functionInfo.trigger = trigger;
     }
 
-    static registerFunction(functionName: string, functionHandler: FunctionHandler) {
-        const functionInfo: FunctionInfo = FunctionApp.functions[functionName];
+    static registerFunction(functionId: string, functionHandler: FunctionHandler, overridingFunctionName?: string) {
+        const functionInfo: FunctionInfo = FunctionApp.functions[functionId];
         if (!functionInfo || !functionInfo.trigger) {
             throw new Error('no trigger is defined for this function');
         }
@@ -53,6 +53,7 @@ export default class FunctionApp {
             return functionHandler.call(null, ...args);
         };
 
+        const functionName = overridingFunctionName || functionId;
         app.generic(functionName, {
             handler: newHandler,
             trigger: functionInfo.trigger!!,
