@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext, Timer } from '@azure/functions';
-import { azureFunction, blobInput, blobOutput, http, queueTrigger, timer } from '../framework';
+import { azureFunction, blobInput, blobOutput, http, queueTrigger, timer } from 'azure-functions-decorators-typescript';
 
 class FunctionApp {
     @azureFunction()
@@ -22,7 +22,7 @@ class FunctionApp {
     @azureFunction('customFunctionName')
     async copyBlob1(
         context: InvocationContext,
-        @queueTrigger('copyblobqueue', 'storage_APPSETTING' ) queueItem: unknown,
+        @queueTrigger('copyblobqueue', 'storage_APPSETTING') queueItem: unknown,
         @blobInput('helloworld/{queueTrigger}', 'storage_APPSETTING') blobInput: unknown,
         @blobOutput('helloworld/{queueTrigger}-copy', 'storage_APPSETTING') blobOutput: any
     ): Promise<void> {
