@@ -1,42 +1,42 @@
 {
-  "name": "func-node-decorators-prototype",
-  "version": "1.0.0",
-  "description": "Prototype for Azure Functions decorators programming model for Node.js",
-  "main": "dist/src/index.js",
-  "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "prestart": "npm run build",
-    "start": "func start",
-    "test": "mocha 'dist/test/**/*.test.js'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hossam-nasr/func-node-decorators-prototype.git"
-  },
-  "author": "Hossam Nasr",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hossam-nasr/func-node-decorators-prototype/issues"
-  },
-  "homepage": "https://github.com/hossam-nasr/func-node-decorators-prototype#readme",
-  "dependencies": {
-    "@azure/functions": "C:\\Users\\hossamnasr\\ms\\azure\\nodejs-worker\\library",
-    "azure-functions-decorators-typescript": "file:../framework"
-  },
-  "devDependencies": {
-    "@types/chai": "^4.3.3",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "^18.7.18",
-    "@typescript-eslint/eslint-plugin": "^5.40.1",
-    "chai": "^4.3.6",
-    "eslint": "^8.26.0",
-    "eslint-config-standard-with-typescript": "^23.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.3.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "func-cli-nodejs-v4": "^4.0.4764",
-    "mocha": "^10.0.0",
-    "typescript": "^4.8.4"
-  }
+    "name": "func-node-decorators-prototype",
+    "version": "1.0.0",
+    "description": "Prototype for Azure Functions decorators programming model for Node.js",
+    "main": "dist/src/index.js",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "prestart": "npm run build",
+        "start": "func start",
+        "test": "mocha 'dist/test/**/*.test.js'"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hossam-nasr/func-node-decorators-prototype.git"
+    },
+    "author": "Hossam Nasr",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/hossam-nasr/func-node-decorators-prototype/issues"
+    },
+    "homepage": "https://github.com/hossam-nasr/func-node-decorators-prototype#readme",
+    "dependencies": {
+        "@azure/functions": "^4.0.0-alpha.3",
+        "azure-functions-decorators-typescript": "^1.0.0-alpha.1"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.3.3",
+        "@types/mocha": "^9.1.1",
+        "@types/node": "^18.7.18",
+        "@typescript-eslint/eslint-plugin": "^5.40.1",
+        "chai": "^4.3.6",
+        "eslint": "^8.26.0",
+        "eslint-config-standard-with-typescript": "^23.0.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-n": "^15.3.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "func-cli-nodejs-v4": "^4.0.4764",
+        "mocha": "^10.0.0",
+        "typescript": "^4.8.4"
+    }
 }

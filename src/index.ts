@@ -3,7 +3,7 @@ import { azureFunction, blobInput, blobOutput, http, queueTrigger, timer } from 
 
 class FunctionApp {
     @azureFunction()
-    async testHttpTrigger(context: InvocationContext, @http() request: HttpRequest) {
+    async httpTrigger1(context: InvocationContext, @http() request: HttpRequest) {
         context.log(`Http function processed request for url "${request.url}"`);
 
         const name = request.query.get('name') || (await request.text()) || 'world';
